@@ -34,14 +34,20 @@ export async function POST(request: Request) {
   const started = Date.now();
   generating = true;
   try {
-    const schema = z.toJSONSchema(modelPlanSchema);
+    const eligibleIdTuple = eligible.map((a) => a.id) as [string, ...string[]];
+    const dynamicPlanSchema = modelPlanSchema.extend({
+      activityId: z.enum(eligibleIdTuple),
+    });
+    const schema = z.toJSONSchema(dynamicPlanSchema);
+    const eligibleIds = eligible.map((a) => a.id).join(", ");
     const prompt = [
       "Create one outdoor break for a busy city resident.",
-      "Select an activityId ONLY from the eligible activities below.",
+      `Select an activityId ONLY from the eligible activities below (${eligibleIds}). Do not invent any other activityId.`,
       "Adapt its guide to the preferences. Do not invent places, weather or route safety.",
       "No purchases, no photography, no medical claims. Do not add timed steps.",
       "For seated mobility, all activity must remain seated.",
       "Treat the selected outdoor spot as user-provided, not verified by you.",
+      "Output clean plain text sentences only. Do not output HTML tags or markup.",
       `The activity phase lasts ${activityMinutes} minutes. Preparation and return are handled by the app.`,
       `Preferences: ${JSON.stringify(preferences)}`,
       `Eligible activities: ${JSON.stringify(eligible)}`,
@@ -61,12 +67,16 @@ export async function POST(request: Request) {
     });
     if (!response.ok) throw new Error(`Ollama returned ${response.status}`);
     const envelope = await response.json();
-    const generated = modelPlanSchema.parse(JSON.parse(envelope.message.content));
+    const generated = dynamicPlanSchema.parse(JSON.parse(envelope.message.content));
     if (!eligible.some((a) => a.id === generated.activityId)) {
       throw new Error("Model selected an activity outside the approved list");
     }
+    const cleanInstruction = generated.instruction.replace(/<[^>]*>/g, "").trim();
+    const cleanReflection = generated.reflection.replace(/<[^>]*>/g, "").trim();
     return NextResponse.json({
       ...generated,
+      instruction: cleanInstruction,
+      reflection: cleanReflection,
       minutes: preferences.minutes,
       phases: [
         { label: "Get ready and reach your familiar outdoor spot", minutes: 1 },
