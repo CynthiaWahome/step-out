@@ -1,0 +1,42 @@
+[
+  {
+    "id": "listen",
+    "name": "Notice outdoor sounds",
+    "spaces": ["compound", "street", "seating"],
+    "goals": ["quiet", "notice"],
+    "mobility": ["walking", "seated"],
+    "guide": "Pause in an appropriate familiar outdoor spot. Notice three sounds without using your phone. If seated was selected, remain seated throughout."
+  },
+  {
+    "id": "colours",
+    "name": "Notice city colours",
+    "spaces": ["compound", "street", "seating"],
+    "goals": ["quiet", "notice"],
+    "mobility": ["walking", "seated"],
+    "guide": "From a familiar outdoor spot, notice three colours in buildings, walls or everyday objects. No photography is needed. If seated was selected, remain seated."
+  },
+  {
+    "id": "walk",
+    "name": "A familiar short walk",
+    "spaces": ["compound", "street"],
+    "goals": ["movement", "quiet", "notice"],
+    "mobility": ["walking"],
+    "guide": "Walk along a familiar appropriate path within the available activity time. Reserve the separate return phase for returning. Do not name a destination or require a purchase."
+  },
+  {
+    "id": "seated-movement",
+    "name": "A seated outdoor pause",
+    "spaces": ["compound", "street", "seating"],
+    "goals": ["movement"],
+    "mobility": ["walking", "seated"],
+    "guide": "Use a familiar suitable outdoor seat. If comfortable, gently move your hands and feet within your usual range, with pauses to notice your surroundings. Do not prescribe exercise or make health claims."
+  },
+  {
+    "id": "details",
+    "name": "Notice ordinary details",
+    "spaces": ["compound", "street", "seating"],
+    "goals": ["notice"],
+    "mobility": ["walking", "seated"],
+    "guide": "Notice shapes or patterns in familiar buildings or paving from an appropriate outdoor spot. Do not enter private property. If seated was selected, remain seated."
+  }
+]
