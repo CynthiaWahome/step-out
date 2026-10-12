@@ -69,8 +69,15 @@ export default function Home() {
   }
 
   return <main>
-    <header><p className="brand">STEP OUT</p><h1>A little outside time, around your real life.</h1>
-      <p>Choose your time and a familiar outdoor space. Get one short plan, then put your screen away.</p></header>
+    <header>
+      <img
+        src="/brand/step-out-logo-transparent.png"
+        alt="Step Out"
+        style={{ width: 220, height: "auto", marginBottom: 12 }}
+      />
+      <h1>A little outside time, around your real life.</h1>
+      <p>Choose your time and a familiar outdoor space. Get one short plan, then put your screen away.</p>
+    </header>
     <form onSubmit={generate}>
       <fieldset disabled={busy}>
         <legend>Plan your break</legend>

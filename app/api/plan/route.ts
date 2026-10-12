@@ -18,12 +18,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "A plan is already being generated. Try again shortly." }, { status: 429 });
   }
   const preferences = parsed.data;
+  console.log(`\n[Step Out] 📥 Request: ${preferences.minutes} min | space: ${preferences.space} | goal: ${preferences.goal} | mobility: ${preferences.mobility}`);
   const eligible = activities.filter((activity) =>
     activity.spaces.includes(preferences.space) &&
     activity.goals.includes(preferences.goal) &&
     activity.mobility.includes(preferences.mobility)
   );
   if (!eligible.length) {
+    console.warn(`[Step Out] ⚠️ No matching activity found for choices.`);
     return NextResponse.json({ error: "No activity matches those choices." }, { status: 422 });
   }
   // Code owns the time budget. The model cannot change it.
@@ -32,6 +34,9 @@ export async function POST(request: Request) {
   const model = process.env.OLLAMA_MODEL || "gemma3:1b";
   const baseUrl = process.env.OLLAMA_BASE_URL || "http://127.0.0.1:11434";
   const started = Date.now();
+  console.log(`[Step Out] 🔍 Filtered ${eligible.length} eligible activities: ${eligible.map((a) => a.id).join(", ")}`);
+  console.log(`[Step Out] ⏱️ Schedule phases: 1m prep | ${activityMinutes}m activity | ${returnMinutes}m return`);
+  console.log(`[Step Out] 🤖 Prompting local ${model} via Ollama at ${baseUrl}...`);
   generating = true;
   try {
     const eligibleIdTuple = eligible.map((a) => a.id) as [string, ...string[]];
@@ -73,6 +78,8 @@ export async function POST(request: Request) {
     }
     const cleanInstruction = generated.instruction.replace(/<[^>]*>/g, "").trim();
     const cleanReflection = generated.reflection.replace(/<[^>]*>/g, "").trim();
+    const elapsedMs = Date.now() - started;
+    console.log(`[Step Out] ✅ Plan generated: "${generated.title}" [${generated.activityId}] in ${(elapsedMs / 1000).toFixed(1)}s\n`);
     return NextResponse.json({
       ...generated,
       instruction: cleanInstruction,
@@ -84,10 +91,10 @@ export async function POST(request: Request) {
         { label: "Return and settle in", minutes: returnMinutes },
       ],
       model,
-      elapsedMs: Date.now() - started,
+      elapsedMs,
     }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
-    console.error("Plan generation failed:", error instanceof Error ? error.message : "Unknown error");
+    console.error(`[Step Out] ❌ Generation failed:`, error instanceof Error ? error.message : "Unknown error");
     return NextResponse.json({
       error: "Could not generate a plan. Check that Ollama is running and the selected model is downloaded, then try again.",
     }, { status: 503 });
