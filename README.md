@@ -11,6 +11,8 @@
 [![Zod](https://img.shields.io/badge/Zod_4-Schema_Validation-3E67B1?style=for-the-badge&logo=zod&logoColor=white)](https://zod.dev/)
 [![Offline](https://img.shields.io/badge/Offline-100%25_Local-176B63?style=for-the-badge)](https://github.com/CynthiaWahome/step-out)
 [![Touch Grass](https://img.shields.io/badge/Theme-Touch_Grass-2E7D32?style=for-the-badge)](https://github.com/CynthiaWahome/step-out)
+[![Hacktoberfest](https://img.shields.io/badge/Hacktoberfest-2026-FF7518?style=for-the-badge&logo=hacktoberfest&logoColor=white)](https://hacktoberfest.com/)
+[![MLH](https://img.shields.io/badge/MLH-Open_Source-E73427?style=for-the-badge&logo=majorleaguehacking&logoColor=white)](https://mlh.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-C76B4F?style=for-the-badge)](LICENSE)
 
 </div>
