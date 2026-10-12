@@ -1,6 +1,10 @@
-# Step Out
+<p align="center">
+  <img src="docs/assets/step-out-logo-readme.png" alt="Step Out" width="480" />
+</p>
 
-> **A local, privacy-first AI outdoor break planner designed for busy city life.**
+<p align="center">
+  <strong>A local, privacy-first AI outdoor break planner designed for busy city life.</strong>
+</p>
 
 <div align="center">
 
